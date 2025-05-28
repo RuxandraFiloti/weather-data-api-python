@@ -3,12 +3,14 @@ import pandas as pd #import pandas library
 
 app = Flask(__name__)
 
+stations = pd.read_csv("data_small/stations.txt", skiprows=17) #read the stations file and skip some rows
+stations = stations[["STAID", "STANAME                                 "]] #select only the columns we need
 
 
 #integrate the index.html in main.py
 @app.route("/")
 def home():
-    return render_template("home.html")
+    return render_template("home.html", data=stations.to_html()) #.to_html() converts the dataframe to HTML table format
 
 @app.route("/api/v1/<station>/<date>") #create a route for the API and is dynamic (station and date)
 def about(station, date):
